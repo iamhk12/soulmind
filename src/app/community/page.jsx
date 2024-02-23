@@ -197,7 +197,7 @@ const Community = () => {
     const [allposts, setAllPosts] = useState([])
 
     const FetchPosts = async (rev = false) => {
-        setIsLoading(true);
+        // setIsLoading(true);
         try {
             const resFromBack = await fetch('https://server-innercalm.vercel.app/api/allPosts', {
                 method: "GET",
