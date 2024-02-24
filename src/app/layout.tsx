@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import Wrapper from "../app/ToastContainer"
 // const inter = Inter({ subsets: ["latin"] }); className={inter.className}
+import { Analytics } from '@vercel/analytics/react';
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,6 +20,7 @@ export default function RootLayout({
         <Wrapper>
           {children}
         </Wrapper>
+        <Analytics mode={'production'} />;
       </body>
     </html>
   );
