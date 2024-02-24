@@ -111,8 +111,7 @@ const MusicScreen = ({ slides }) => {
     useEffect(() => {
         const interval = setInterval(() => {
             setIsPlaying(!audioRef.current.paused);
-            console.log("::::audioRef.current.paused", audioRef.current.paused)
-        }, 500); 
+        }, 500);
         return () => clearInterval(interval);
     }, []);
 

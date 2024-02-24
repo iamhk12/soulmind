@@ -4,6 +4,7 @@ import { X, Check } from "lucide-react";
 import { GetAllNOtes, AddNote, deleteNote } from "@/apis/Notes";
 import { auth } from "@/apis/firebaseConfig";
 import { FaTrash, FaTrashAlt } from "react-icons/fa";
+import { toast } from "react-toastify";
 const Notes: React.FC<any> = (props) => {
   const { open, setopen } = props;
 
@@ -17,15 +18,12 @@ const Notes: React.FC<any> = (props) => {
     setProfileMail(auth?.currentUser?.email);
   }, [auth?.currentUser?.email]);
 
-  console.log(Note, ":::::");
-
   useEffect(() => {
     getData();
   }, [count]);
 
   const getData = async () => {
     const data = await GetAllNOtes(profileEMail);
-    console.log(data);
     setnotes(data);
   };
 
@@ -38,7 +36,7 @@ const Notes: React.FC<any> = (props) => {
     if (resp.ok) {
       setNote("");
       setButtonStage(false);
-      setCount(cnt=>cnt+1)
+      setCount((cnt) => cnt + 1);
     }
     console.log(resp);
   };
@@ -61,26 +59,30 @@ const Notes: React.FC<any> = (props) => {
           />
         </div>
         <div className="w-[100%]  py-[10px] px-[5px] flex flex-col justify-center items-center">
-          {notes !== null &&
-            notes?.length !== 0 &&
-            notes?.map((item: any, idx) => {
-              console.log(item)
-              return (<div
-                key={item?.data}
-                className="w-[90%] bg-[#303030ab] p-2 pr-3 mb-2 rounded-md relative"
-              >
-                <h2 className="max-w-full">{item?.data}</h2>
-                <button className="absolute top-2 p-1 rounded-full bg-white right-2 text-red-500"
-                  onClick={ async ()=>{
-                    await deleteNote(item._id);
-                    setCount(cnt=>cnt+1)
-                  }}
-                >
-                  <FaTrash />
-                </button>
-              </div>)
+          {notes?.length !== 0 ? (
+            <>
+              {notes?.map((item: any, idx) => {
+                console.log(item);
+                return (
+                  <div
+                    key={item?.data}
+                    className="w-[90%] bg-[#303030ab] p-2 pr-3 mb-2 rounded-md relative"
+                  >
+                    <h2 className="max-w-full">{item?.data}</h2>
+                    <button
+                      className="absolute top-2 p-1 rounded-full bg-white right-2 text-red-500"
+                      onClick={async () => {
+                        await deleteNote(item._id);
+                        setCount((cnt) => cnt + 1);
+                      }}
+                    >
+                      <FaTrash />
+                    </button>
+                  </div>
+                );
               })}
-          {notes !== null && notes?.length === 0 && (
+            </>
+          ) : (
             <div className="w-full flex flex-col justify-center items-center gap-1 mb-[40px] ">
               <img
                 src="/images/noNoteFound.png"
@@ -98,7 +100,17 @@ const Notes: React.FC<any> = (props) => {
               Add Note
             </button>
           ) : (
-            <div className="w-[90%] py-[15px] flex justify-center items-center gap-2">
+            <form
+              className="w-[90%] py-[15px] flex justify-center items-center gap-2"
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (Note.length === 0) {
+                  toast.error("Enter Any Note", { position: "top-center" });
+                } else {
+                  addNoteFunction();
+                }
+              }}
+            >
               <input
                 placeholder="Type your note"
                 className="border-[#ffffff] focus:border-[3px] w-[80%] py-[8px] pl-[5px] text-[0.95rem] outline-none rounded-[5px] border-[1px] bg-transparent"
@@ -122,7 +134,7 @@ const Notes: React.FC<any> = (props) => {
                 onClick={(e) => {
                   e.preventDefault();
                   if (Note.length === 0) {
-                    alert("Enter Any Note");
+                    toast.error("Enter Any Note", { position: "top-center" });
                   } else {
                     addNoteFunction();
                   }
@@ -131,7 +143,7 @@ const Notes: React.FC<any> = (props) => {
               >
                 <Check color="white" />
               </div>
-            </div>
+            </form>
           )}
         </div>
       </div>

@@ -30,7 +30,7 @@ export const GetAllNOtes = async (email) => {
             body:JSON.stringify({email})
         })
         const msg = await resp.json()
-        return msg.data
+        return msg;
     }
     catch (err) {
         console.log(err)
