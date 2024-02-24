@@ -145,7 +145,7 @@ const Nav = () => {
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <div className='profile-user'>
-                                <img src={profileURL} alt='wefre' className='w-[20px] h-[20px] rounded-[100px]' />
+                                {profileURL && <img src={profileURL} alt='Profile' className='w-[20px] h-[20px] rounded-[100px]' />}
                             </div>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="w-56">
