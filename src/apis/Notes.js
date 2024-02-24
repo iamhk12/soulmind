@@ -1,4 +1,4 @@
-const URL = "https://server-innercalm.vercel.app/api"
+const URL = "/api"
 
 export const AddNote = async (formdata) => {
     try {

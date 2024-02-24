@@ -1,12 +1,6 @@
 'use client';
 import React, { useState, useRef, useEffect } from "react";
 
-
-// import rainSound from '../components/music/sounds/rain.mp3';
-// import trafficSound from '../components/music/sounds/traffic.mp3';
-// import peopleSound from '../components/music/sounds/people.mp3';
-// import campFire from '../components/music/sounds/campfire.mp3';
-
 import musicList from '@/components/music/musicList';
 
 import { faYoutube } from '@fortawesome/free-brands-svg-icons';
@@ -50,6 +44,8 @@ import { CiStickyNote } from "react-icons/ci";
 
 import Notes from './notes'
 import DeepBreathe from "./deepbreathe";
+import ClipLoader from "react-spinners/ClipLoader";
+import ScaleLoader from "react-spinners/ScaleLoader";
 
 const slideStyles = {
     width: "100%",
@@ -112,12 +108,19 @@ const MusicScreen = ({ slides }) => {
     const peopleAudioRef = useRef(null);
     const fireAudioRef = useRef(null);
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setIsPlaying(!audioRef.current.paused);
+            console.log("::::audioRef.current.paused", audioRef.current.paused)
+        }, 500); 
+        return () => clearInterval(interval);
+    }, []);
 
 
     const [notesopen, setnotesopen] = useState(false)
     const [deepBreatheOpen, setBreatheOpen] = useState(false)
 
-    const [dropdownOpen , setdropdownOpen] = useState(false)
+    const [dropdownOpen, setdropdownOpen] = useState(false)
 
     useEffect(() => {
         if (rainAudioRef.current) {
@@ -343,12 +346,12 @@ const MusicScreen = ({ slides }) => {
     return (
         <>
             <MusicPreloader />
-            <div style={{ background: "#101316", height: "100%", width: "100%"   }} className="musspage">
-                {notesopen===true && (
-                     <Notes open={notesopen} setopen={setnotesopen}/>
+            <div style={{ background: "#101316", height: "100%", width: "100%" }} className="musspage">
+                {notesopen === true && (
+                    <Notes open={notesopen} setopen={setnotesopen} />
                 )}
                 {deepBreatheOpen && (
-                    <DeepBreathe setopen={setBreatheOpen}/>
+                    <DeepBreathe setopen={setBreatheOpen} />
                 )}
                 <div style={slideStylesWidthBackground} >
                     <div>
@@ -424,7 +427,7 @@ const MusicScreen = ({ slides }) => {
                                         }
                                     }}
                                     className="play-button" style={{ cursor: "pointer", fontSize: "30px", border: "none", backgroundColor: "#00000000", color: "#fff", textShadow: "#000 2px 2px 20px" }} >
-                                    {isLoading ? <FontAwesomeIcon icon={faSpinner} /> : isPlaying ? <FontAwesomeIcon icon={faPause} /> : <FontAwesomeIcon icon={faPlay} />}
+                                    {isLoading ? <><ScaleLoader color="white" width={2} /></> : isPlaying ? <FontAwesomeIcon icon={faPause} /> : <FontAwesomeIcon icon={faPlay} />}
                                 </button>
                                 <button
                                     className="next_prev"
@@ -463,14 +466,14 @@ const MusicScreen = ({ slides }) => {
                                         </button>
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent className="music-drop-content">
-                                        <DropdownMenuItem className='music-items' value="notes" onClick={(e)=>{
+                                        <DropdownMenuItem className='music-items' value="notes" onClick={(e) => {
                                             e.preventDefault()
                                             setdropdownOpen(false)
                                             setnotesopen(true)
                                         }}>
                                             Notes
                                         </DropdownMenuItem>
-                                        <DropdownMenuItem className='music-items' value="db" onClick={(e)=>{
+                                        <DropdownMenuItem className='music-items' value="db" onClick={(e) => {
                                             e.preventDefault()
                                             setdropdownOpen(false)
                                             setBreatheOpen(true)

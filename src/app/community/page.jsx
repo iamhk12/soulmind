@@ -76,6 +76,16 @@ const Community = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
+        
+        if (!story) {
+            setSubErr(true)
+            toast.error("Please Add a Story to Post",{
+                position :"top-center"
+            })
+            setIsSubmitting(false);
+            return;
+        }
+        
         const bool = await checkValid(story);
         if (!bool) {
             toast.info("Please enter something related to mental health♾️")
@@ -84,13 +94,9 @@ const Community = () => {
         }
 
         let x = JSON.stringify({ name, story });
-        if (!story) {
-            setSubErr(true)
-            setIsSubmitting(false);
-            return;
-        }
+        
 
-        fetch('https://server-innercalm.vercel.app/api/newPost', {
+        fetch('/api/newPost', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: x,
@@ -125,10 +131,10 @@ const Community = () => {
 
     const supportPost = (postId) => {
 
-        if (supportedPostIds.includes(postId)) {
+        if (isPostSupported(postId)) {
             // If the post is already supported, call the endpoint to un-support it
 
-            fetch(`https://server-innercalm.vercel.app/api/notSupportPost?id=${postId}`, {
+            fetch(`/api/notSupportPost?id=${postId}`, {
                 method: 'PUT',
             })
                 .then((response) => {
@@ -140,9 +146,17 @@ const Community = () => {
                             "supportedPostIds",
                             JSON.stringify(updatedSupportedPostIds)
                         );
-
-                        // Refresh the list of posts
-                        FetchPosts();
+                        let arr = allposts;
+                            
+                        arr.map((post)=>{
+                            if(post._id == postId && post.supports > 0){
+                                post.supports = post.supports - 1;
+                            } 
+                        })
+                        
+                        setAllPosts(arr)
+                        
+                        // FetchPosts();
                     } else {
                         // Handle the case where un-supporting failed (e.g., show an error message).
                         console.error('Error:', response);
@@ -154,11 +168,11 @@ const Community = () => {
         } else {
             // If the post is not supported, call the endpoint to support it
 
-            fetch(`https://server-innercalm.vercel.app/api/supportPost?id=${postId}`, {
+            fetch(`/api/supportPost?id=${postId}`, {
                 method: 'PUT',
             })
                 .then((response) => {
-                    if (response.status === 200) {
+                    if (response.ok) {
                         // Update the supportedPostIds state and store it in localStorage
                         const updatedSupportedPostIds = [...supportedPostIds, postId];
                         setSupportedPostIds(updatedSupportedPostIds);
@@ -166,12 +180,18 @@ const Community = () => {
                             "supportedPostIds",
                             JSON.stringify(updatedSupportedPostIds)
                         );
-
+                        
+                        let arr = allposts;
+                            
+                        arr.map((post)=>{
+                            if(post._id == postId ){
+                                post.supports = post.supports + 1;
+                            } 
+                        })
+                        
+                        setAllPosts(arr)
                         // Refresh the list of posts
-                        FetchPosts();
-                    } else {
-                        // Handle the case where support addition failed (e.g., show an error message).
-                        console.error('Error:', response);
+                        // FetchPosts();
                     }
                 })
                 .catch((error) => {
@@ -199,7 +219,7 @@ const Community = () => {
     const FetchPosts = async (rev = false) => {
         setIsLoading(true);
         try {
-            const resFromBack = await fetch('https://server-innercalm.vercel.app/api/allPosts', {
+            const resFromBack = await fetch('/api/allPosts', {
                 method: "GET",
                 headers: {
                     Accept: "application/json",
@@ -359,7 +379,7 @@ const Community = () => {
                                 <div key={val._id} className={theme + " post"} >
                                     <div className={theme + " posthead"} onClick={() => { router.push(`/post/${val._id}`) }}>
                                         <img src='/images/defpp.jpg' alt="" />
-                                        <p style={{ margin: "0px" }} className="name">{"User" + Math.floor(Math.random() * 1000000)}</p>
+                                        <p style={{ margin: "0px" }} className="name">Anonymous</p>
                                     </div>
 
                                     <div className="post_content" onClick={() => { router.push(`/post/${val._id}`) }}>
@@ -369,10 +389,11 @@ const Community = () => {
                                     </div>
                                     <div className="post_actions" style={{ width: "100%", height: " 44px", background: "" }}>
                                         <div className="supports">
-                                            {isPostSupported(val._id) ? (
-                                                <FontAwesomeIcon className={theme + " supportIcon"} icon={faHeartSupported} style={{ fontSize: "25px", color: "#f55656" }} onClick={() => supportPost(val._id)} />
-                                            ) : (
-                                                <FontAwesomeIcon className={theme + " supportIcon"} icon={faHeart} style={{ fontSize: "25px" }} onClick={() => supportPost(val._id)} />
+                                            {isPostSupported(val._id) && (
+                                                <button onClick={() => supportPost(val._id)}><FontAwesomeIcon className={theme + " supportIcon"} icon={faHeartSupported} style={{ fontSize: "25px", color: "#f55656" }}  /></button>
+                                            )}
+                                            {!isPostSupported(val._id) &&(
+                                                <button onClick={() => supportPost(val._id)}><FontAwesomeIcon className={theme + " supportIcon"} icon={faHeart} style={{ fontSize: "25px" }} /></button>
                                             )}
                                             <div className={theme + " noOfSupports"} style={{ fontSize: "10px" }}>
                                                 {val.supports}
@@ -400,7 +421,7 @@ const Community = () => {
                                 <h3>Share Post</h3>
                                 {/* Display the post content or a link to the post */}
                                 <p>Share this post with others:</p>
-                                {/* <p>{`https://server-innercalm.vercel.app/api/post/${postToShare}`}</p> */}
+                                {/* <p>{`/api/post/${postToShare}`}</p> */}
                                 {/* Add social media sharing buttons or other sharing options here */}
                                 <button onClick={shareOnWhatsApp}>
                                     <FaWhatsapp /> Share on WhatsApp
@@ -450,7 +471,7 @@ const Community = () => {
                                             isSubmitting ?
                                             <>
                                             <div style={{display : "flex", justifyContent :"center", width :"100%"}}>
-                                                <ClipLoader color={theme=="dark" ? "#ffffff" : "#000"} />
+                                                <ClipLoader color="#ffffff"/>
                                             </div>
                                             </>
                                             :

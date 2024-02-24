@@ -10,7 +10,7 @@
 
 .linearbgcmitypg {
   transition: 0.3s all ease-in-out;
-  background: linear-gradient(#fff, #f2b5bb, #5faae3, #939bcb);
+  background: linear-gradient(#ffe5e7 90%, #f2b5bb );
 }
 
 .supportIcon {

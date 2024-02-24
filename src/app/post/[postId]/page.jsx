@@ -39,7 +39,7 @@ function Post() {
     useEffect(() => {
         const fetchPostData = async () => {
             try {
-                const response = await fetch(`https://server-innercalm.vercel.app/api/post?id=${postId}`, {
+                const response = await fetch(`/api/post?id=${postId}`, {
                     method: 'GET',
                 });
 
@@ -65,7 +65,7 @@ function Post() {
 
     const handleSupportPost = () => {
         if (supported) {
-            fetch(`https://server-innercalm.vercel.app/api/notSupportPost?id=${postId}`, {
+            fetch(`/api/notSupportPost?id=${postId}`, {
                 method: "PUT",
             })
                 .then((response) => {
@@ -80,7 +80,7 @@ function Post() {
                     console.error("Error:", error);
                 });
         } else {
-            fetch(`https://server-innercalm.vercel.app/api/supportPost?id=${postId}`, {
+            fetch(`/api/supportPost?id=${postId}`, {
                 method: "PUT",
             })
                 .then((response) => {

@@ -59,7 +59,7 @@ const Nav = () => {
         }
 
         // const location = router.pathname;
-        settheme(location === "/my-space" || location === "/appointment" ? "dark" : ITheme)
+        settheme(location === "/my-space" ? "dark" : ITheme)
 
         // setProfileURL(auth.currentUser.photoURL)
         // setUserData(auth.currentUser)
@@ -131,9 +131,6 @@ const Nav = () => {
                         <Link className={location === "/community" ? theme + " activeNav" : "#"} href="/community"> <FontAwesomeIcon className='navBarIcons' icon={faUsers} />Community</Link>
                     </li>
                     <li>
-                        <Link className={location === "/appointment" ? theme + " activeNav" : "#"} href="/appointment"><FontAwesomeIcon className='navBarIcons' icon={faHome} />Appointment</Link>
-                    </li>
-                    <li>
                         <Link className={location === "/my-space" ? theme + " activeNav" : "#"} href="/my-space"><FontAwesomeIcon className='navBarIcons' icon={faHeadphones} /> My Space</Link>
                     </li>
                     <li>
@@ -152,7 +149,7 @@ const Nav = () => {
                 </ul>
 
                 {
-                    location !== "/my-space" && location !== "/appointment" ?
+                    location !== "/my-space" ?
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <div className='profile-user'>
@@ -183,25 +180,20 @@ const Nav = () => {
                         <span></span>
                     </div>
                     <div className={theme + ' mobile_Navs ' + (open ? "opened" : "#")}>
-
                         <li>
-                            <Link className={location === "/appointment" ? theme + " activeNav" : "#"} href="/appointment"><FontAwesomeIcon className='navBarIcons' icon={faHome} /> Appointment</Link>
+                            <Link className={location === "/community" ? theme + " activeNav" : "#"} href="/community"> <FontAwesomeIcon className='navBarIcons' icon={faUsers} />Community</Link>
                         </li>
                         <li>
-                            <Link className={location === "community" ? theme + " activeNav" : "#"} href="/community"> <FontAwesomeIcon className='navBarIcons' icon={faUsers} />Community</Link>
+                            <Link className={location === "/my-space" ? theme + " activeNav" : "#"} href="/my-space"><FontAwesomeIcon className='navBarIcons' icon={faHeadphones} /> My Space</Link>
                         </li>
                         <li>
-                            <Link className={location === "music" ? theme + " activeNav" : "#"} href="/my-space"><FontAwesomeIcon className='navBarIcons' icon={faHeadphones} /> Music</Link>
+                            <Link className={location === "/chatbot" ? theme + " activeNav" : "#"} href="/chatbot"><FontAwesomeIcon className='navBarIcons' icon={faHandHoldingHeart} /> Soul-Friend</Link>
                         </li>
                         <li>
-                            <Link className={location === "education" ? theme + " activeNav" : "#"} href="/education"><FontAwesomeIcon className='navBarIcons' icon={faBook} /> Education</Link>
-                        </li>
-
-                        <li>
-                            <Link className={location === "helplines" ? theme + " activeNav" : "#"} href="/helplines"><FontAwesomeIcon className='navBarIcons' icon={faPhone} /> Helplines</Link>
+                            <Link className={location === "/education" ? theme + " activeNav" : "#"} href="/education"><FontAwesomeIcon className='navBarIcons' icon={faBook} /> Education</Link>
                         </li>
                         <li>
-                            <Link className={location === "contact" ? theme + " activeNav" : "#"} href="/contact"><FontAwesomeIcon className='navBarIcons' icon={faHandHoldingHeart} /> Contact us</Link>
+                            <Link className={location === "/contact" ? theme + " activeNav" : "#"} href="/contact"><FontAwesomeIcon className='navBarIcons' icon={faHandHoldingHeart} /> Contact us</Link>
                         </li>
                     </div>
 

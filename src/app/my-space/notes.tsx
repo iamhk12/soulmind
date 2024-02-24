@@ -62,8 +62,8 @@ const Notes: React.FC<any> = (props) => {
         </div>
         <div className="w-[100%]  py-[10px] px-[5px] flex flex-col justify-center items-center">
           {notes !== null &&
-            notes.length !== 0 &&
-            notes.map((item: any, idx) => {
+            notes?.length !== 0 &&
+            notes?.map((item: any, idx) => {
               console.log(item)
               return (<div
                 key={item?.data}
@@ -80,7 +80,7 @@ const Notes: React.FC<any> = (props) => {
                 </button>
               </div>)
               })}
-          {notes !== null && notes.length === 0 && (
+          {notes !== null && notes?.length === 0 && (
             <div className="w-full flex flex-col justify-center items-center gap-1 mb-[40px] ">
               <img
                 src="/images/noNoteFound.png"
