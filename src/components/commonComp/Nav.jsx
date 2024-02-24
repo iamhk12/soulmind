@@ -32,21 +32,14 @@ const Nav = () => {
     const router = useRouter()
 
     const [initialTheme, setinitialTheme] = useState('light')
-    const [userData , setUserData] = useState(null)
+    const [userData, setUserData] = useState(null)
     const [theme, settheme] = useState('')
     const [isChecked, setisChecked] = useState(false)
-    const [profileURL , setProfileURL] = useState(auth?.currentUser?.photoURL)
-    useEffect(()=>{
+    const [profileURL, setProfileURL] = useState(auth?.currentUser?.photoURL)
+    useEffect(() => {
         setProfileURL(auth?.currentUser?.photoURL)
-    },[auth?.currentUser?.photoURL])
+    }, [auth?.currentUser?.photoURL])
     // let initialTheme = localStorage.getItem("theme")
-
-    useEffect(()=>{
-      const user = localStorage.getItem("soulmindUser")
-      if(user===null){
-        router.push('/')
-      }
-    },[])
 
     useEffect(() => {
         let ITheme = localStorage.getItem("theme");
@@ -74,9 +67,8 @@ const Nav = () => {
         }
     }, [theme])
 
-    const logoutFunction = () =>{
+    const logoutFunction = () => {
         logout()
-        localStorage.removeItem('soulmindUser')
         router.push('/')
     }
 
@@ -149,28 +141,27 @@ const Nav = () => {
                 </ul>
 
                 {
-                    location !== "/my-space" ?
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <div className='profile-user'>
-                                    <img src={profileURL} alt='wefre' className='w-[20px] h-[20px] rounded-[100px]'/>
-                                </div>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent className="w-56">
-                                <DropdownMenuLabel>Theme</DropdownMenuLabel>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuRadioGroup value={theme} onValueChange={handleToggle}>
-                                    <DropdownMenuRadioItem value="light">Light</DropdownMenuRadioItem>
-                                    <DropdownMenuRadioItem value="dark">Dark</DropdownMenuRadioItem>
-                                </DropdownMenuRadioGroup>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem style={{fontWeight : "600"}} onClick={logoutFunction}>Logout</DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                        :
-                        <div style={{ width: "30px" }}>
 
-                        </div>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <div className='profile-user'>
+                                <img src={profileURL} alt='wefre' className='w-[20px] h-[20px] rounded-[100px]' />
+                            </div>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className="w-56">
+                            {location !== "/my-space" &&
+                                <>
+                                    <DropdownMenuLabel>Theme</DropdownMenuLabel>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuRadioGroup value={theme} onValueChange={handleToggle}>
+                                        <DropdownMenuRadioItem value="light">Light</DropdownMenuRadioItem>
+                                        <DropdownMenuRadioItem value="dark">Dark</DropdownMenuRadioItem>
+                                    </DropdownMenuRadioGroup>
+                                </>}
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem style={{ fontWeight: "600" }} onClick={logoutFunction}>Logout</DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                 }
 
                 <div className={theme + " navbar__menu"} onClick={handleClick}>

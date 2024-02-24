@@ -8,9 +8,6 @@ import { signInWithPopup,signOut} from "firebase/auth";
 const provider = new GoogleAuthProvider()
 export const loginWithGoogle=async()=>{
     const result =  await signInWithPopup(auth,provider)
-    if(result.email!==null){
-      localStorage.setItem("soulmindUser",result.email)
-    }
 };
 
 
