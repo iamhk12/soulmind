@@ -217,7 +217,7 @@ const Community = () => {
     const [allposts, setAllPosts] = useState([])
 
     const FetchPosts = async (rev = false) => {
-        setIsLoading(true);
+        // setIsLoading(true);
         try {
             const resFromBack = await fetch('/api/allPosts', {
                 method: "GET",
