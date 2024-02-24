@@ -16,12 +16,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body className="">
         <Wrapper>
           {children}
         </Wrapper>
-        <Analytics mode={'production'} />;
+        <div style={{display : "none"}}>
+          <Analytics mode={'production'}/>;
+        </div>
       </body>
+      
     </html>
   );
 }
