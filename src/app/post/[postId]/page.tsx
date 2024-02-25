@@ -228,9 +228,9 @@ async function fetchAllsupportedIds() {
                             <button onClick={shareOnWhatsApp}>
                                 <FaWhatsapp /> Share on WhatsApp
                             </button>
-                            <button onClick={shareOnInstagram}>
+                            {/* <button onClick={shareOnInstagram}>
                                 <FaInstagram /> Share on Instagram
-                            </button>
+                            </button> */}
                             <button onClick={shareOnTwitter}>
                                 <FaTwitter /> Share on Twitter
                             </button>
