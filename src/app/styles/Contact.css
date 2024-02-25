@@ -327,7 +327,7 @@ footer {
 
 }
 
-@media screen and (min-width:768px) {
+@media screen and (min-width:1024px) {
     footer {
         background: rgb(34, 55, 14);
         color: white;
@@ -346,7 +346,7 @@ footer {
     text-align: center;
 }
 
-@media screen and (max-width : 768px) {
+@media screen and (max-width : 1024px) {
 
     .wrapper .title h1 {
         color: #13436b;
@@ -423,7 +423,7 @@ footer {
     z-index: 9998;
 }
 
-@media screen and (max-width:768px) {
+@media screen and (max-width:1024px) {
     .contactpage .success_popup {
         width: 90%;
 

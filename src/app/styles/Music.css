@@ -213,7 +213,7 @@
     transition: all 0.2s ease-in-out;
 }
 
-@media screen and (max-width:768px) {
+@media screen and (max-width:1024px) {
     .YTembed {
         width: 93vw;
         z-index: 99999;
@@ -301,7 +301,7 @@
 
 /* Media queries for responsiveness */
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
     .quotediv {
         padding: 10px;
     }

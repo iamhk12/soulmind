@@ -8,6 +8,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 export const metadata: Metadata = {
   title: "SoulMind",
   description: "A web-application for peace and productivity.",
+  
 };
 
 export default function RootLayout({

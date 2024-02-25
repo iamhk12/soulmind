@@ -65,7 +65,7 @@
 
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 1024px) {
     .banner {
         min-height: calc(100vh - 80px);
     }
@@ -341,7 +341,7 @@
 }
 
 
-@media screen and (max-width : 768px) {
+@media screen and (max-width : 1024px) {
 
     .listen_music_content {
         display: flex;
@@ -374,7 +374,7 @@
     border-radius: 30px;
 }
 
-@media screen and (max-width:768px) {
+@media screen and (max-width:1024px) {
     .banner {
         min-height: calc(100vh - 80px);
         width: 100%;
@@ -627,7 +627,7 @@
 
 
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 1024px) {
     .banner {
         min-height: calc(100vh - 80px);
     }

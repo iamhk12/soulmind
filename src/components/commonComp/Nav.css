@@ -168,7 +168,7 @@ body {
 .mobile_Navs {
     display: none;
 }
-@media screen and (max-width:768px) {
+@media screen and (max-width:1024px) {
 
     .mobile_Navs {
         position: absolute;
@@ -312,7 +312,7 @@ body {
     margin-right: 50px;
 }
 
-@media screen and (max-width:768px) {
+@media screen and (max-width:1024px) {
     .profile-user{
         border-radius: 50%;
         overflow:hidden;
@@ -333,7 +333,7 @@ body {
 
 
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 1024px) {
     .navbar {
         padding: 0 20px;
         padding-left: 10px;
