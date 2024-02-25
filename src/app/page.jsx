@@ -6,6 +6,14 @@ import useCheckAuth from "@/hooks/useCheckAuth";
 import { useRouter } from 'next/navigation'
 
 const Docs = () => {
+  useEffect(() => {
+    // Update document title when component mounts
+    document.title = 'SoulMindᴮᴱᵀᴬ - Login';
+    // Clean up document title when component unmounts
+    return () => {
+        document.title = 'SoulMind';
+    }
+}, []);
     const router = useRouter()
   const handleLogin = () => {
     loginWithGoogle();
