@@ -20,12 +20,13 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
     DropdownMenuItem,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
+
 import { auth } from '@/function-apis/firebaseConfig';
 
 import { logout } from '@/function-apis/auth'
-import useCheckAuth from '@/hooks/useCheckAuth';
-import { toast } from 'react-toastify';
+// import useCheckAuth from '@/hooks/useCheckAuth';
+// import { toast } from 'react-toastify';
 
 const Nav = () => {
     var location = usePathname()
@@ -141,7 +142,6 @@ const Nav = () => {
                 </ul>
 
                 {
-
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <div className='profile-user'>
@@ -157,8 +157,8 @@ const Nav = () => {
                                         <DropdownMenuRadioItem value="light">Light</DropdownMenuRadioItem>
                                         <DropdownMenuRadioItem value="dark">Dark</DropdownMenuRadioItem>
                                     </DropdownMenuRadioGroup>
+                                    <DropdownMenuSeparator />
                                 </>}
-                            <DropdownMenuSeparator />
                             <DropdownMenuItem style={{ fontWeight: "600" }} onClick={logoutFunction}>Logout</DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>

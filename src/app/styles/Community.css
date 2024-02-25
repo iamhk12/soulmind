@@ -620,7 +620,9 @@
   background-color: rgb(255, 8, 8);
   opacity: 1;
   border-radius: 50%;
-  padding: 8px 12px;
+  /* padding: 8px 12px; */
+  height: 40px;
+  width: 40px;
   color: white;
   box-shadow: #000 3px 5px 10px;
 }
