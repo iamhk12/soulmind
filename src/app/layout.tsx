@@ -21,7 +21,7 @@ export default function RootLayout({
           {children}
         </Wrapper>
         <div style={{display : "none"}}>
-          <Analytics mode={'production'}/>;
+          {/* <Analytics mode={'production'}/>; */}
         </div>
       </body>
       

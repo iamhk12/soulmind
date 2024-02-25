@@ -1,8 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { X, Check } from "lucide-react";
-import { GetAllNOtes, AddNote, deleteNote } from "@/apis/Notes";
-import { auth } from "@/apis/firebaseConfig";
+import { GetAllNOtes, AddNote, deleteNote } from "@/function-apis/Notes";
+import { auth } from "@/function-apis/firebaseConfig";
 import { FaTrash, FaTrashAlt } from "react-icons/fa";
 import { toast } from "react-toastify";
 const Notes: React.FC<any> = (props) => {

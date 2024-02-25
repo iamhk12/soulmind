@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { auth } from "@/apis/firebaseConfig";
+import { auth } from "@/function-apis/firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
 
 export default function useCheckAuth() {

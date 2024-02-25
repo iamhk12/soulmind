@@ -9,32 +9,42 @@ import { faHeart as faHeartSupported, faClose } from "@fortawesome/free-solid-sv
 import { faHeart, faPaperPlane as faShareNodesRegular } from "@fortawesome/free-regular-svg-icons";
 import { FaWhatsapp, FaInstagram, FaTwitter, FaCopy } from "react-icons/fa";
 import "../../styles/Community.css"
+import MoonLoader from "react-spinners/MoonLoader";
+import { auth } from "@/function-apis/firebaseConfig";
+
+
 
 function Post() {
-    // if (localStorage.getItem("theme") !== "light")
-    //     localStorage.setItem("theme", "dark")
-
-    // let theme = localStorage.getItem("theme")
 
     const router = useRouter();
     const { postId } = useParams();
-    const [post, setPost] = useState({});
-    const [supported, setSupported] = useState(false);
+    const [post, setPost] = useState<any>({});
     const [supportsCount, setSupportsCount] = useState(0);
     const [showSharePopup, setShowSharePopup] = useState(false);
-    const [supportedpostIds, setSupportedPostIds] = useState([])
-    // Add this state
-    // const navigate = useNavigate();
-    const [theme, settheme] = useState();
+    const [supportedPostIds, setSupportedPostIds] = useState<any>([])
+    
+    const [theme, settheme] = useState<any>();
     useEffect(() => {
         let themeVal = localStorage.getItem("theme")
         settheme(themeVal)
-
-        const parsedData = JSON.parse(localStorage.getItem("supportedPostIds"))
-        if(parsedData)
-            setSupportedPostIds(parsedData)
-
     }, [])
+
+    useEffect(() => {
+            console.log(auth)
+            fetchAllsupportedIds();
+    }, [auth, auth?.currentUser]);
+
+async function fetchAllsupportedIds() {
+    try {
+        await fetch(`/api/getSupportedPostsId?email=${auth.currentUser.email}`)
+            .then(async (res : Response)=>{
+                const data = await res.json()
+                setSupportedPostIds(data?.supported);
+            })
+    } catch (error) {
+        console.error('Error:', error);
+    }
+};
 
     useEffect(() => {
         const fetchPostData = async () => {
@@ -46,10 +56,6 @@ function Post() {
                 if (response.status === 200) {
                     const data = await response.json();
                     setPost(data);
-
-                    const supportedPostIds = JSON.parse(localStorage.getItem("supportedPostIds")) || [];
-                    setSupported(supportedPostIds.includes(data._id));
-
                     setSupportsCount(data.supports);
                 } else {
                     throw new Error(`Failed to fetch post data (Status: ${response.status})`);
@@ -63,43 +69,61 @@ function Post() {
         fetchPostData();
     }, [postId]);
 
-    const handleSupportPost = () => {
-        if (supported) {
-            fetch(`/api/notSupportPost?id=${postId}`, {
-                method: "PUT",
+    const isPostSupported = (postId : any) => {
+        return supportedPostIds?.includes(postId);
+    };
+
+    const supportPost = (postId : string) => {
+        console.log("support post")
+        if (isPostSupported(postId)) {
+            // If the post is already supported, call the endpoint to un-support it
+
+            fetch(`/api/notSupportPost?id=${postId}&email=${auth?.currentUser?.email}`, {
+                method: 'PUT',
             })
                 .then((response) => {
                     if (response.status === 200) {
-                        setSupported(false);
-                        setSupportsCount(supportsCount - 1);
+                        // Update the supportedPostIds state and store it in localStorage
+                        const updatedSupportedPostIds = supportedPostIds.filter((id : string) => id !== postId);
+                        setSupportedPostIds(updatedSupportedPostIds);
+
+                        setSupportsCount(prev => prev>0 ? prev-1 : 0)
+
+                        // FetchPosts();
                     } else {
-                        console.error("Error:", response);
+                        // Handle the case where un-supporting failed (e.g., show an error message).
+                        console.error('Error:', response);
                     }
                 })
                 .catch((error) => {
-                    console.error("Error:", error);
+                    console.error('Error:', error);
                 });
         } else {
-            fetch(`/api/supportPost?id=${postId}`, {
-                method: "PUT",
+            // If the post is not supported, call the endpoint to support it
+
+            fetch(`/api/supportPost?id=${postId}&email=${auth?.currentUser?.email}`, {
+                method: 'PUT',
             })
                 .then((response) => {
-                    if (response.status === 200) {
-                        setSupported(true);
-                        setSupportsCount(supportsCount + 1);
-                    } else {
-                        console.error("Error:", response);
+                    if (response.ok) {
+                        // Update the supportedPostIds state and store it in localStorage
+                        const updatedSupportedPostIds = [...supportedPostIds, postId];
+                        setSupportedPostIds(updatedSupportedPostIds);
+                        
+                        setSupportsCount((prev)=>prev+1)
+                        // Refresh the list of posts
+                        // FetchPosts();
                     }
                 })
                 .catch((error) => {
-                    console.error("Error:", error);
+                    console.error('Error:', error);
                 });
         }
     };
 
     const shareOnWhatsApp = () => {
         const postLink = `https://soulmind.vercel.app/post/${postId}`;
-        const whatsappMessage = `Check out this post on InnerCalm: ${postLink}`;
+        const whatsappMessage = `Check out this post on SoulMind: ${postLink}`;
 
         const whatsappShareLink = `https://api.whatsapp.com/send?text=${encodeURIComponent(whatsappMessage)}`;
 
@@ -115,7 +139,7 @@ function Post() {
 
     const shareOnTwitter = () => {
         const postLink = `https://soulmind.vercel.app/post/${postId}`;
-        const tweetText = "Check out this post on InnerCalm!";
+        const tweetText = "Check out this post on SoulMind!";
 
         const twitterShareLink = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${encodeURIComponent(postLink)}`;
 
@@ -138,7 +162,6 @@ function Post() {
     return (
         <>
             <Nav />
-
             <div className={theme + " postPage"}>
                 <div className={theme + " post"}>
                     <button className="BackBTNPost" onClick={() => { router.push("/community") }}>
@@ -147,10 +170,13 @@ function Post() {
                     <div className={theme + " posthead"}>
                         <img src="/images/defpp.jpg" alt="" />
                         <p style={{ margin: "0px" }} className="name">
-                            {"User" + Math.floor(Math.random() * 1000000)}
+                            Anonymous
+                            {/* {"User" + Math.floor(Math.random() * 1000000)} */}
                         </p>
                     </div>
-
+                    {!post?.story && <div className="flex justify-center">
+                        <MoonLoader color={theme=="dark" ? "#ffffff" : "#000"} size={35}/>
+                    </div>}
                     <div className="post_content">
                         <p className={theme + " post_text"}>{post.story}</p>
                     </div>
@@ -159,19 +185,20 @@ function Post() {
                         style={{ width: "100%", height: " 44px", background: "" }}
                     >
                         <div className="supports">
-                            {supported ? (
+                            {isPostSupported(post?._id) ? (
+                                
                                 <FontAwesomeIcon
                                     className={theme + " supportIcon"}
                                     icon={faHeartSupported}
                                     style={{ fontSize: "25px", color: "#f55656" }}
-                                    onClick={handleSupportPost}
+                                    onClick={()=>{supportPost(post._id)}}
                                 />
                             ) : (
                                 <FontAwesomeIcon
                                     className={theme + " supportIcon"}
                                     icon={faHeart}
                                     style={{ fontSize: "25px" }}
-                                    onClick={handleSupportPost}
+                                    onClick={()=>{supportPost(post._id)}}
                                 />
                             )}
                             <div className={theme + " noOfSupports"} style={{ fontSize: "10px" }}>

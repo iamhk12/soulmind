@@ -1,7 +1,7 @@
 'use client'
 import React from "react";
 import ModalComponent from "@/components/home/ModelComponent"
-import { loginWithGoogle } from "@/apis/auth";
+import { loginWithGoogle } from "@/function-apis/auth";
 import useCheckAuth from "@/hooks/useCheckAuth";
 import { useRouter } from 'next/navigation'
 

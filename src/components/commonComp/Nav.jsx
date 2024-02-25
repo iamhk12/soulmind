@@ -21,9 +21,9 @@ import {
     DropdownMenuTrigger,
     DropdownMenuItem,
 } from "@/components/ui/dropdown-menu"
-import { auth } from '@/apis/firebaseConfig';
+import { auth } from '@/function-apis/firebaseConfig';
 
-import { logout } from '@/apis/auth'
+import { logout } from '@/function-apis/auth'
 import useCheckAuth from '@/hooks/useCheckAuth';
 import { toast } from 'react-toastify';
 

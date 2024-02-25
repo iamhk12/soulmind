@@ -13,10 +13,11 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { toast } from "react-toastify";
 import PuffLoader from "react-spinners/PuffLoader"
 import ClipLoader from "react-spinners/ClipLoader";
+import { auth } from "@/function-apis/firebaseConfig";
 
 const genAI = new GoogleGenerativeAI("AIzaSyBX16wrIG9mPvTXSc9iDA35v70phX7qgqg");
 
-async function checkValid(valueOfPrompt) {
+async function checkValid(valueOfPrompt : string) {
     // For text-only input, use the gemini-pro model
     const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
@@ -31,15 +32,16 @@ async function checkValid(valueOfPrompt) {
 
 
 const Community = () => {
-    const [supportedPostIds, setSupportedPostIds] = useState([]);
+    const [supportedPostIds, setSupportedPostIds] = useState<any[]>([]);
     const [isSortPopupOpen, setisSortPopupOpen] = useState(false)
     const router = useRouter()
 
-    const [theme, settheme] = useState('light')
+    const [theme, settheme] = useState<any>('light')
 
     const [isLoading, setIsLoading] = useState(true)
     const [isSubmitting, setIsSubmitting] = useState(false)
     
+    // console.log("::::supportedPostIds", supportedPostIds)
     useEffect(() => {
 
         let themeVal = localStorage.getItem("theme")
@@ -47,10 +49,23 @@ const Community = () => {
     }, [])
 
     useEffect(() => {
-        const parsedData = JSON.parse(localStorage.getItem("supportedPostIds"))
-        if (parsedData)
-            setSupportedPostIds(parsedData)
-    }, [])
+            console.log(auth)
+            fetchAllsupportedIds();
+    }, [auth, auth?.currentUser]);
+    
+    async function fetchAllsupportedIds() {
+        try {
+            console.log(":::::responseing:")
+            await fetch(`/api/getSupportedPostsId?email=${auth.currentUser.email}`)
+                .then(async (res : Response)=>{
+                const data = await res.json()
+                   console.log(data,":::::response")
+                setSupportedPostIds(data?.supported);
+                })
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
 
     useEffect(() => {
         // Update document title when component mounts
@@ -73,7 +88,7 @@ const Community = () => {
 
     const [sortType, setSortType] = useState(1);
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e : any) => {
         e.preventDefault();
         setIsSubmitting(true);
         
@@ -125,16 +140,16 @@ const Community = () => {
     };
 
 
-    const isPostSupported = (postId) => {
-        return supportedPostIds.includes(postId);
+    const isPostSupported = (postId : any) => {
+        return supportedPostIds?.includes(postId);
     };
 
-    const supportPost = (postId) => {
+    const supportPost = (postId : string) => {
 
         if (isPostSupported(postId)) {
             // If the post is already supported, call the endpoint to un-support it
 
-            fetch(`/api/notSupportPost?id=${postId}`, {
+            fetch(`/api/notSupportPost?id=${postId}&email=${auth?.currentUser?.email}`, {
                 method: 'PUT',
             })
                 .then((response) => {
@@ -142,20 +157,17 @@ const Community = () => {
                         // Update the supportedPostIds state and store it in localStorage
                         const updatedSupportedPostIds = supportedPostIds.filter((id) => id !== postId);
                         setSupportedPostIds(updatedSupportedPostIds);
-                        localStorage.setItem(
-                            "supportedPostIds",
-                            JSON.stringify(updatedSupportedPostIds)
-                        );
+
                         let arr = allposts;
                             
-                        arr.map((post)=>{
+                        arr.map((post : any)=>{
                             if(post._id == postId && post.supports > 0){
                                 post.supports = post.supports - 1;
                             } 
                         })
                         
                         setAllPosts(arr)
-                        
+
                         // FetchPosts();
                     } else {
                         // Handle the case where un-supporting failed (e.g., show an error message).
@@ -168,7 +180,7 @@ const Community = () => {
         } else {
             // If the post is not supported, call the endpoint to support it
 
-            fetch(`/api/supportPost?id=${postId}`, {
+            fetch(`/api/supportPost?id=${postId}&email=${auth?.currentUser?.email}`, {
                 method: 'PUT',
             })
                 .then((response) => {
@@ -176,14 +188,10 @@ const Community = () => {
                         // Update the supportedPostIds state and store it in localStorage
                         const updatedSupportedPostIds = [...supportedPostIds, postId];
                         setSupportedPostIds(updatedSupportedPostIds);
-                        localStorage.setItem(
-                            "supportedPostIds",
-                            JSON.stringify(updatedSupportedPostIds)
-                        );
                         
                         let arr = allposts;
                             
-                        arr.map((post)=>{
+                        arr.map((post : any)=>{
                             if(post._id == postId ){
                                 post.supports = post.supports + 1;
                             } 
@@ -214,7 +222,7 @@ const Community = () => {
         setCPGbg("cmnitypage linearbgcmitypg")
     }, 800);
 
-    const [allposts, setAllPosts] = useState([])
+    const [allposts, setAllPosts] = useState<any[]>([])
 
     const FetchPosts = async (rev = false) => {
         // setIsLoading(true);
@@ -255,8 +263,8 @@ const Community = () => {
 
 
     const [showSharePopup, setShowSharePopup] = useState(false);
-    const [postToShare, setPostToShare] = useState(null);
-    const handleShareClick = (postId) => {
+    const [postToShare, setPostToShare] = useState<any>(null);
+    const handleShareClick = (postId : string) => {
         setPostToShare(postId);
         setShowSharePopup(true);
     };
@@ -343,7 +351,7 @@ const Community = () => {
                                                 FetchPosts();
                                                 setSortType(1);
                                             }}
-                                            style={{ display: sortType == 1 && "none" }}>
+                                            style={{ display: sortType == 1 ? "none" : "block" }}>
                                             Newest
                                         </button>
                                         <button
@@ -355,14 +363,14 @@ const Community = () => {
                                                 })
                                                 setSortType(2);
                                             }}
-                                            style={{ display: sortType == 2 && "none" }}>
+                                            style={{ display: sortType == 2 ? "none" : "block" }}>
                                             Oldest
                                         </button>
                                         <button
                                             onClick={() => {
                                                 setSortType(1);
                                             }}
-                                            style={{ display: sortType == 3 && "none" }}>
+                                            style={{ display: sortType == 3 ? "none" : "block" }}>
                                             Supports
                                         </button>
                                     </div>

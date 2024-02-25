@@ -3,7 +3,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { useState, useRef, useEffect } from "react";
 import "../styles/ChatBot.css";
 import Nav from "../../components/commonComp/Nav";
-import { auth } from "@/apis/firebaseConfig";
+import { auth } from "@/function-apis/firebaseConfig";
 
 const genAI = new GoogleGenerativeAI("AIzaSyBX16wrIG9mPvTXSc9iDA35v70phX7qgqg");
 
