@@ -46,7 +46,6 @@ const Nav = () => {
         let ITheme = localStorage.getItem("theme");
 
         if (!ITheme) {
-            // alert("MEOW")
             ITheme = "light";
             localStorage.setItem("theme", ITheme);
             setinitialTheme(ITheme)

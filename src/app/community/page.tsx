@@ -245,7 +245,7 @@ const Community = () => {
 
 
             if (resFromBack.status !== 200 || !data) {
-                window.alert("Error")
+                toast.error("Server Error ")
             }
 
         }

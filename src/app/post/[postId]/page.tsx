@@ -11,6 +11,7 @@ import { FaWhatsapp, FaInstagram, FaTwitter, FaCopy } from "react-icons/fa";
 import "../../styles/Community.css"
 import MoonLoader from "react-spinners/MoonLoader";
 import { auth } from "@/function-apis/firebaseConfig";
+import { toast } from "react-toastify";
 
 
 
@@ -156,7 +157,7 @@ async function fetchAllsupportedIds() {
         document.execCommand('copy');
         document.body.removeChild(tempInput);
 
-        alert('Post link copied to clipboard!');
+        toast.success('Post link copied to clipboard!');
     };
 
     return (
