@@ -148,25 +148,25 @@ const Community = () => {
 
         if (isPostSupported(postId)) {
             // If the post is already supported, call the endpoint to un-support it
+            const updatedSupportedPostIds = supportedPostIds.filter((id) => id !== postId);
+            setSupportedPostIds(updatedSupportedPostIds);
 
+            let arr = allposts;
+                
+            arr.map((post : any)=>{
+                if(post._id == postId && post.supports > 0){
+                    post.supports = post.supports - 1;
+                } 
+            });
+            
+            setAllPosts(arr)
             fetch(`/api/notSupportPost?id=${postId}&email=${auth?.currentUser?.email}`, {
                 method: 'PUT',
             })
                 .then((response) => {
                     if (response.status === 200) {
                         // Update the supportedPostIds state and store it in localStorage
-                        const updatedSupportedPostIds = supportedPostIds.filter((id) => id !== postId);
-                        setSupportedPostIds(updatedSupportedPostIds);
-
-                        let arr = allposts;
-                            
-                        arr.map((post : any)=>{
-                            if(post._id == postId && post.supports > 0){
-                                post.supports = post.supports - 1;
-                            } 
-                        })
                         
-                        setAllPosts(arr)
 
                         // FetchPosts();
                     } else {
@@ -179,25 +179,25 @@ const Community = () => {
                 });
         } else {
             // If the post is not supported, call the endpoint to support it
-
+            const updatedSupportedPostIds = [...supportedPostIds, postId];
+            setSupportedPostIds(updatedSupportedPostIds);
+            
+            let arr = allposts;
+                
+            arr.map((post : any)=>{
+                if(post._id == postId ){
+                    post.supports = post.supports + 1;
+                } 
+            })
+            
+            setAllPosts(arr)
             fetch(`/api/supportPost?id=${postId}&email=${auth?.currentUser?.email}`, {
                 method: 'PUT',
             })
                 .then((response) => {
                     if (response.ok) {
                         // Update the supportedPostIds state and store it in localStorage
-                        const updatedSupportedPostIds = [...supportedPostIds, postId];
-                        setSupportedPostIds(updatedSupportedPostIds);
                         
-                        let arr = allposts;
-                            
-                        arr.map((post : any)=>{
-                            if(post._id == postId ){
-                                post.supports = post.supports + 1;
-                            } 
-                        })
-                        
-                        setAllPosts(arr)
                         // Refresh the list of posts
                         // FetchPosts();
                     }
