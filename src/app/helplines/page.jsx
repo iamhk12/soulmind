@@ -62,7 +62,7 @@
 
 //     useEffect(() => {
 //         // Update document title when component mounts
-//         document.title = 'SoulMindᴮᴱᵀᴬ - Helplines';
+//         document.title = 'SoulMind - Helplines';
 //         // Clean up document title when component unmounts
 //         return () => {
 //             document.title = 'SoulMind';

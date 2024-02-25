@@ -19,7 +19,7 @@ const Education = () => {
 
     useEffect(() => {
         // Update document title when component mounts
-        document.title = 'SoulMindᴮᴱᵀᴬ - Education';
+        document.title = 'SoulMind - Education';
         // Clean up document title when component unmounts
         return () => {
             document.title = 'SoulMind';

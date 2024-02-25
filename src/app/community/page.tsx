@@ -69,7 +69,7 @@ const Community = () => {
 
     useEffect(() => {
         // Update document title when component mounts
-        document.title = 'SoulMindᴮᴱᵀᴬ - Community';
+        document.title = 'SoulMind - Community';
         // Clean up document title when component unmounts
         return () => {
             document.title = 'SoulMind';

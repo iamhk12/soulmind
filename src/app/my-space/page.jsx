@@ -82,7 +82,7 @@ const leftArrowStyles = {
 const MusicScreen = ({ slides }) => {
     useEffect(() => {
         // Update document title when component mounts
-        document.title = 'SoulMindᴮᴱᵀᴬ - Music';
+        document.title = 'SoulMind - Music';
         // Clean up document title when component unmounts
         return () => {
             document.title = 'SoulMind';

@@ -26,7 +26,7 @@ const Contact = () => {
 
     useEffect(() => {
         // Update document title when component mounts
-        document.title = 'SoulMindᴮᴱᵀᴬ - Contact Us';
+        document.title = 'SoulMind - Contact Us';
         // Clean up document title when component unmounts
         return () => {
             document.title = 'SoulMind';
