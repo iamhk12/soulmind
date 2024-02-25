@@ -3,6 +3,7 @@ import "./globals.css";
 import Wrapper from "../app/ToastContainer"
 // const inter = Inter({ subsets: ["latin"] }); className={inter.className}
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -22,6 +23,7 @@ export default function RootLayout({
         </Wrapper>
         <div style={{display : "none"}}>
           <Analytics mode={'production'}/>;
+          <SpeedInsights />
         </div>
       </body>
       
